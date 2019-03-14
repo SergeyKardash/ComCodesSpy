@@ -1,0 +1,39 @@
+nav {
+  width: 200px;
+  background-color: #343a40;
+  color: #fff;
+  height: 100vh;
+  max-height: 100vh;
+  position: fixed;
+  top: 0;
+  padding: 70px 0 0;
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+  box-sizing: border-box;
+  .menu {
+    padding: 0 15px;
+    &-element {
+      padding: 15px 0;
+      color: #999;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      &.active {
+        background-color: red;
+      }
+      &:hover {
+        color: #bbb;
+        cursor: pointer;
+      }
+    }
+  }
+  .footer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    height: 50px;
+    background-color: #212529;
+  }
+}

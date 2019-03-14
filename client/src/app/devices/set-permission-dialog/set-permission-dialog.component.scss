@@ -1,0 +1,56 @@
+.dialog-container {
+  header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #eee;
+    padding: 15px;
+    font-size: 20px;
+
+    .close {
+      cursor: pointer;
+    }
+  }
+
+  .dialog-content {
+    padding: 15px;
+
+    .checkboxes {
+      margin-bottom: 10px;
+
+      mat-checkbox {
+        margin-right: 20px;
+      }
+    }
+
+    .inputs {
+      display: flex;
+      flex-direction: column;
+    }
+
+  }
+
+  .dialog-actions {
+    padding: 15px;
+    border-top: 1px solid #eee;
+    display: flex;
+    justify-content: flex-end;
+
+    button {
+      &:last-child {
+        background-color: #64b5f6;
+        color: #fff;
+        margin-left: 10px;
+      }
+    }
+  }
+}
+
+/deep/.mat-checkbox-checked.mat-accent .mat-checkbox-background,
+.mat-checkbox-indeterminate.mat-accent .mat-checkbox-background {
+  background-color: #343a40;
+}
+
+/deep/.mat-checkbox:not(.mat-checkbox-disabled).mat-accent .mat-checkbox-ripple .mat-ripple-element {
+  background-color: #343a40;
+}

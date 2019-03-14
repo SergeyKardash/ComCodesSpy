@@ -1,0 +1,37 @@
+<div class="dialog-container">
+  <header>
+    <div class="title">Select File Types To Upload</div>
+    <mat-icon class="close" (click)="onClose()">clear</mat-icon>
+  </header>
+  <div class="dialog-content">
+    <div class="checkboxes">
+      <mat-checkbox [(ngModel)]="music">Music</mat-checkbox>
+      <mat-checkbox [(ngModel)]="picture">Picture</mat-checkbox>
+      <mat-checkbox [(ngModel)]="sms">SMS</mat-checkbox>
+    </div>
+
+    <div class="inputs">
+      <mat-form-field>
+        <input matInput placeholder="Key Word" [(ngModel)]="keyWord">
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput placeholder="Mobile Number" type="number" [(ngModel)]="mobileNumber">
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput [matDatepicker]="fromDate" placeholder="From Date" [value]="startDate">
+        <mat-datepicker-toggle matSuffix [for]="fromDate"></mat-datepicker-toggle>
+        <mat-datepicker touchUi #fromDate></mat-datepicker>
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput [matDatepicker]="toDate" placeholder="To Date" [value]="endDate">
+        <mat-datepicker-toggle matSuffix [for]="toDate"></mat-datepicker-toggle>
+        <mat-datepicker touchUi #toDate></mat-datepicker>
+      </mat-form-field>
+    </div>
+  </div>
+  <div class="dialog-actions">
+      <button mat-raised-button (click)="onClose()">Close</button>
+      <button mat-raised-button (click)="onSave()">Save Changes</button>
+  </div>
+
+</div>

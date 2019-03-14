@@ -1,0 +1,14 @@
+<nav #menu>
+  <div class="menu">
+    <div class="menu-element" (click)="onDeviceList()"> <span *ngIf="open"> Devices list </span>
+      <mat-icon title="Device list">view_list</mat-icon>
+    </div>
+    <div class="menu-element" (click)="onFilesBackup()"> <span *ngIf="open"> Files Backup </span>
+      <mat-icon title="Files Backup">backup</mat-icon>
+    </div>
+  </div>
+  <div class="footer" (click)="onToggleMenu()">
+    <mat-icon *ngIf="open">keyboard_arrow_left</mat-icon>
+    <mat-icon *ngIf="!open">keyboard_arrow_right</mat-icon>
+  </div>
+</nav>

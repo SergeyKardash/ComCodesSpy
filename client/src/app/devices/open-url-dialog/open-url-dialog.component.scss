@@ -1,0 +1,36 @@
+.dialog-container {
+  header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #eee;
+    padding: 15px;
+    font-size: 20px;
+    .close {
+      cursor: pointer;
+    }
+  }
+  .dialog-content {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    padding: 15px;
+    mat-form-field {
+      width: 100%;
+    }
+    button {
+      background-color: #64b5f6;
+      color: #fff;
+    }
+  }
+}
+
+/deep/.mat-form-field.mat-focused {
+  .mat-form-field-label {
+    color: #343a40;
+  }
+}
+
+/deep/.mat-focused .mat-form-field-underline .mat-form-field-ripple {
+  background: #343a40;
+}

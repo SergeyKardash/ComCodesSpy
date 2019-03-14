@@ -1,0 +1,51 @@
+.login-page {
+  height: 100%;
+  width: 100%;
+  background-color: #343a40;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  mat-card {
+    transform: translate(0, -150px) !important;
+    mat-card-header {
+      display: flex;
+      justify-content: center;
+    }
+  }
+  form {
+    background-color: #fff;
+    display: flex;
+    flex-direction: column;
+    width: 350px;
+    padding: 0 15px;
+    mat-form-field {
+      margin-bottom: 5px;
+    }
+  }
+  button {
+    margin-top: 15px;
+    background-color: #64b5f6;
+    color: #fff;
+    &:disabled {
+      background-color: #bbdefb;
+    }
+  }
+}
+
+/deep/.mat-form-field.mat-focused {
+  .mat-form-field-label {
+    color: #343a40;
+  }
+}
+
+/deep/.mat-focused .mat-form-field-underline .mat-form-field-ripple {
+  background: #343a40;
+}
+
+@media (max-width: 500px) {
+  .login-page {
+    form {
+      width: 240px;
+    }
+  }
+}

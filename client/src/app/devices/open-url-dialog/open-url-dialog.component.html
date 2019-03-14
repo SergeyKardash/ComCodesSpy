@@ -1,0 +1,13 @@
+<div class="dialog-container">
+  <header>
+    <div class="title">Open Url In Device</div>
+    <mat-icon class="close" (click)="onClose()">clear</mat-icon>
+  </header>
+  <div class="dialog-content">
+    <mat-form-field>
+      <input matInput placeholder="Enter Url Here (with Http/Https):" autocomplete="off" #url>
+    </mat-form-field>
+    <button mat-raised-button (click)='onOpen()'>Open</button>
+  </div>
+
+</div>
