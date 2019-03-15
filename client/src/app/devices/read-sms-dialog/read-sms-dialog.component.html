@@ -1,15 +1,9 @@
 <div class="dialog-container">
   <header>
-    <div class="title">Select File Types To Upload</div>
+    <div class="title">Read SMS</div>
     <mat-icon class="close" (click)="onClose()">clear</mat-icon>
   </header>
   <div class="dialog-content">
-    <div class="checkboxes">
-      <mat-checkbox [(ngModel)]="music">Music</mat-checkbox>
-      <mat-checkbox [(ngModel)]="picture">Picture</mat-checkbox>
-      <mat-checkbox [(ngModel)]="sms">SMS</mat-checkbox>
-    </div>
-
     <div class="inputs">
       <mat-form-field>
         <input matInput placeholder="Key Word" [(ngModel)]="keyWord">

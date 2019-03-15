@@ -10,8 +10,8 @@ import { DevicesService } from "./devices.service";
 import { catchError, takeWhile } from "rxjs/operators";
 import { throwError } from "rxjs";
 import { Device } from "../shared/interfaces";
-import { SetPermissionDialogComponent } from "./set-permission-dialog/set-permission-dialog.component";
 import { OpenUrlDialogComponent } from "./open-url-dialog/open-url-dialog.component";
+import { ReadSmsDialogComponent } from "./read-sms-dialog/read-sms-dialog.component";
 
 @Component({
   selector: "app-devices",
@@ -66,9 +66,9 @@ export class DevicesComponent implements OnInit, OnDestroy {
   }
 
   onSetPermission(device) {
-    const dialogRef = this.dialog.open(SetPermissionDialogComponent, {
+    const dialogRef = this.dialog.open(ReadSmsDialogComponent, {
       width: '400px',
-      panelClass: 'set-permission',
+      panelClass: 'read-sms',
       data: device
     });
   }

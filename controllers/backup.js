@@ -19,18 +19,13 @@ module.exports.createBackup = async (req, res, next) => {
     keyWord: req.body.keyWord,
     mobileNumber: req.body.mobileNumber,
     fromDate: req.body.fromDate,
-    toDate: req.body.toDate,
-    message: req.body.message
+    toDate: req.body.toDate
   })
   const sender = new gcm.Sender(fcmApiKey);
   const message = new gcm.Message({
     data: {
-      key1: 'test'
-    },
-    notification: {
-      title: 'Set Permission',
-      body: 'from set permission dialog',
-      type: 'set_permissions'
+      keyWord: req.body.keyWord,
+      mobileNumber: req.body.mobileNumber
     }
   })
   sender.send(message, deviceToken, (err, response) => {
@@ -51,11 +46,6 @@ module.exports.openUrl = async (req, res, next) => {
   const message = new gcm.Message({
     data: {
       url: url
-    },
-    notification: {
-      title: 'Open Url',
-      body: url,
-      type: 'open_url'
     }
   });
   sender.send(message, deviceToken, (err, response) => {

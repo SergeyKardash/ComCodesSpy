@@ -14,10 +14,6 @@ const backupSchema = new Schema({
   toDate: {
     type: Date
   },
-  message: {
-    type: String,
-    default: 'test'
-  },
   device: {
     ref: 'Device',
     type: Schema.Types.ObjectId,

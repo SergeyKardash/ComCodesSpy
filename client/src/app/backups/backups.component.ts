@@ -25,7 +25,10 @@ export class BackupsComponent implements OnInit, OnDestroy {
     "createdAt",
     "deviceId",
     "deviceName",
-    "message"
+    "keyWord",
+    "mobileNumber",
+    "fromDate",
+    "toDate"
   ];
 
   dataSource: MatTableDataSource<any>;
@@ -39,13 +42,16 @@ export class BackupsComponent implements OnInit, OnDestroy {
       .subscribe((res) => {
         let backupsList = [];
         res.forEach((backup, index) => {
-          const backupResult = Object.assign(backup, {
-            position: index + 1,
-            deviceId: backup.device.deviceId,
-            deviceName: backup.device.deviceName
-          });
-          const { device, ...backupResultEl } = backupResult;
-          backupsList = [...backupsList, backupResultEl];
+          if (backup.device) {
+            const backupResult = Object.assign(backup, {
+              position: index + 1,
+              deviceId: backup.device.deviceId,
+              deviceName: backup.device.deviceName
+            });
+            const { device, ...backupResultEl } = backupResult;
+            backupsList = [...backupsList, backupResultEl];
+            console.log(backupsList)
+          }
         });
         this.dataSource = new MatTableDataSource(backupsList);
         this.dataSource.paginator = this.paginator;
