@@ -23,7 +23,9 @@ module.exports.getDeviceById = async (req, res, next) => {
 module.exports.createDevice = async (req, res, next) => {
   try {
     console.log(req.connection.remoteAddress)
-    const deviceId = req.body.deviceId
+    const deviceId = req.body.deviceId;
+    const ipAdress = req.connection.remoteAddress;
+    ipAdress.replace(/^.*:/, '')
     const connectedDevice = await Device.findOne({
       deviceId  
     });
@@ -33,7 +35,7 @@ module.exports.createDevice = async (req, res, next) => {
       })
     } else {
       const device = await new Device({
-        ipAddress: req.connection.remoteAddress,
+        ipAddress: ipAdress,
         deviceName: req.body.deviceName,
         platform: req.body.platform,
         deviceId: req.body.deviceId,
