@@ -50,7 +50,6 @@ export class BackupsComponent implements OnInit, OnDestroy {
             });
             const { device, ...backupResultEl } = backupResult;
             backupsList = [...backupsList, backupResultEl];
-            console.log(backupsList)
           }
         });
         this.dataSource = new MatTableDataSource(backupsList);

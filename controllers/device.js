@@ -29,9 +29,13 @@ module.exports.createDevice = async (req, res, next) => {
       deviceId  
     });
     if (connectedDevice) {
-      res.status(409).json({
-        message: "Device already exist."
-      })
+      connectedDevice.ipAddress = ipAdress,
+      connectedDevice.deviceName = req.body.deviceName,
+      connectedDevice.platform = req.body.platform,
+      connectedDevice.deviceId = req.body.deviceId,
+      connectedDevice.fcmToken = req.body.fcmToken
+      connectedDevice.save();
+      res.status(201).json(connectedDevice);
     } else {
       const device = await new Device({
         ipAddress: ipAdress,
