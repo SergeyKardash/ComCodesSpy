@@ -28,6 +28,7 @@ export class DevicesComponent implements OnInit, OnDestroy {
     "position",
     "createdAt",
     "ipAddress",
+    "location",
     "deviceName",
     "platform",
     "deviceId",

@@ -10,5 +10,7 @@ export interface Device {
   platform: string;
   createdAt: string;
   fcmToken: string;
+  country: string;
+  city: string;
   _id: string;
 }
