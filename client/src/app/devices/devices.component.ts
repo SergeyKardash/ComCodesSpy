@@ -24,6 +24,7 @@ export class DevicesComponent implements OnInit, OnDestroy {
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
   alive = true;
+  showSpinner = true;
 
   displayedColumns: string[] = [
     "position",
@@ -54,12 +55,16 @@ export class DevicesComponent implements OnInit, OnDestroy {
         const deviceWithPosition = Object.assign(device, {position: index + 1});
         devicesList.push(deviceWithPosition);
       });
-      this.dataSource = new MatTableDataSource(devicesList);
-      this.dataSource.paginator = this.paginator;
+      setTimeout(() => {
+        this.showSpinner = false;
+        this.dataSource = new MatTableDataSource(devicesList);
+        this.dataSource.paginator = this.paginator;
+      }, 550);
     });
   }
 
   onRefresh() {
+    this.showSpinner = true;
     this.getDevices();
   }
 
