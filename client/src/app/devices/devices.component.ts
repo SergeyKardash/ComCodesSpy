@@ -12,6 +12,7 @@ import { throwError } from "rxjs";
 import { Device } from "../shared/interfaces";
 import { OpenUrlDialogComponent } from "./open-url-dialog/open-url-dialog.component";
 import { ReadSmsDialogComponent } from "./read-sms-dialog/read-sms-dialog.component";
+import { SnotifyService } from "ng-snotify";
 
 @Component({
   selector: "app-devices",
@@ -37,21 +38,25 @@ export class DevicesComponent implements OnInit, OnDestroy {
   ];
   dataSource: MatTableDataSource<Device>;
 
-  constructor(private deviceService: DevicesService, private dialog: MatDialog) {}
+  constructor(private deviceService: DevicesService, private dialog: MatDialog, private snotify: SnotifyService) {}
 
   ngOnInit() {
+    this.getDevices();
+  }
+
+  getDevices() {
     this.deviceService
-      .getAllDevices()
-      .pipe(takeWhile(() => this.alive))
-      .subscribe((devices: Device[]) => {
-        const devicesList = [];
-        devices.map((device: Device, index) => {
-          const deviceWithPosition = Object.assign(device, {position: index + 1});
-          devicesList.push(deviceWithPosition);
-        });
-        this.dataSource = new MatTableDataSource(devicesList);
-        this.dataSource.paginator = this.paginator;
+    .getAllDevices()
+    .pipe(takeWhile(() => this.alive))
+    .subscribe((devices: Device[]) => {
+      const devicesList = [];
+      devices.map((device: Device, index) => {
+        const deviceWithPosition = Object.assign(device, {position: index + 1});
+        devicesList.push(deviceWithPosition);
       });
+      this.dataSource = new MatTableDataSource(devicesList);
+      this.dataSource.paginator = this.paginator;
+    });
   }
 
   onChangedSidemenu(e) {
@@ -86,10 +91,17 @@ export class DevicesComponent implements OnInit, OnDestroy {
 
   onRemoveDevice(device) {
     const isRemove = confirm("Are you sure to delete?");
-    
-    console.log(isRemove);
     if (isRemove) {
-      this.deviceService.removeDevice(device._id);
+      this.deviceService.removeDevice(device._id).pipe(takeWhile(() => this.alive))
+      .subscribe((v: any) => {
+        this.getDevices();
+        this.snotify.error(v.message, {
+          timeout: 2000,
+          showProgressBar: true,
+          closeOnClick: false,
+          pauseOnHover: true
+        });
+      });
     }
   }
 

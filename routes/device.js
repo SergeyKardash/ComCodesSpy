@@ -13,6 +13,6 @@ router.get('/:id', controller.getDeviceById);
 router.post('/', controller.createDevice);
 
 // DELETE /api/device/:id
-router.delete('/:id', controller.removeDevice);
+router.delete('/:id', passport.authenticate('jwt', {session: false}), controller.removeDevice);
 
 module.exports = router;
