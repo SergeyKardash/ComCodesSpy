@@ -59,6 +59,10 @@ export class DevicesComponent implements OnInit, OnDestroy {
     });
   }
 
+  onRefresh() {
+    this.getDevices();
+  }
+
   onChangedSidemenu(e) {
     const pageContainerEl = this.pageContainer.nativeElement as HTMLElement;
     if (e) {

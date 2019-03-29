@@ -2,7 +2,7 @@
 <app-sidenav (changed)="onChangedSidemenu($event)"></app-sidenav>
 <div class="devices-list-page" #pageContainer>
   <div class="header">
-    <div class="title">Registered devices</div>
+    <div class="title">Registered devices <mat-icon class="refresh" (click)="onRefresh()">refresh</mat-icon></div>
     <div class="search">
       <mat-form-field>
         <input matInput (keyup)="applyFilter($event.target.value)" autocomplete="off">
