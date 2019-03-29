@@ -65,11 +65,12 @@
         }
       }
       .open-url {
-        background-color: #b2ff59;
+        background-color: #8bc34a;
         border-radius: 5px;
         color: #fff;
         display: flex;
         align-items: center;
+        margin-right: 15px;
         cursor: pointer;
         &/deep/.material-icons {
           font-size: 16px;
