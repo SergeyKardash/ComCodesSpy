@@ -1,4 +1,5 @@
 const express = require('express');
+const expressip = require('express-ip');
 const mongoose = require('mongoose');
 const path = require('path');
 
@@ -23,6 +24,8 @@ mongoose.connect(keys.mongoURI)
   .catch((err) => {
     console.log(err);
   })
+
+app.use(expressip().getIpInfoMiddleware);
 
 app.use(passport.initialize());
 require('./middleware/passport')(passport);

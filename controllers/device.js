@@ -25,6 +25,7 @@ module.exports.createDevice = async (req, res, next) => {
   try {
     const deviceId = req.body.deviceId;
     let ipAdress = req.connection.remoteAddress;
+    console.log(req.ipInfo)
     console.log(ipAdress)
     ipAdress = ipAdress.replace(/^.*:/, '');
     const countryObj = geoip.lookup(ipAdress);
