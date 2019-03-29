@@ -21,6 +21,10 @@ const deviceSchema = new Schema({
   fcmToken: {
     type: String,
     required: true
+  },
+  country: {
+    type: String,
+    default: ''
   }
 }, {
   timestamps: true

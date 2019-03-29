@@ -22,6 +22,7 @@
     "body-parser": "^1.18.3",
     "cors": "^2.8.5",
     "express": "^4.16.4",
+    "geoip-country-lite": "^1.0.0",
     "jsonwebtoken": "^8.5.0",
     "moment": "^2.24.0",
     "mongodb": "^3.1.13",

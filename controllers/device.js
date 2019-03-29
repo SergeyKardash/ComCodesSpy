@@ -1,5 +1,6 @@
 const Device = require('../models/Device');
 const errorHandler = require('../utils/errorHandler');
+const geoip = require('geoip-country-light');
 
 module.exports.getDevices = async (req, res, next) => {
   try {
@@ -25,11 +26,13 @@ module.exports.createDevice = async (req, res, next) => {
     const deviceId = req.body.deviceId;
     let ipAdress = req.connection.remoteAddress;
     ipAdress = ipAdress.replace(/^.*:/, '');
+    const country = geoip.lookup(ipAdress).country;
     const connectedDevice = await Device.findOne({
       deviceId  
     });
     if (connectedDevice) {
       connectedDevice.ipAddress = ipAdress,
+      connectedDevice.country = country,
       connectedDevice.deviceName = req.body.deviceName,
       connectedDevice.platform = req.body.platform,
       connectedDevice.deviceId = req.body.deviceId,
