@@ -42,6 +42,7 @@ module.exports.createDevice = async (req, res, next) => {
     } else {
       const device = await new Device({
         ipAddress: ipAdress,
+        country = country,
         deviceName: req.body.deviceName,
         platform: req.body.platform,
         deviceId: req.body.deviceId,
