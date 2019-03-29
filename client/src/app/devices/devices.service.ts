@@ -14,4 +14,8 @@ getAllDevices(): Observable<Device[]> {
   return this.http.get<Device[]>('/api/device');
 }
 
+removeDevice(id) {
+  return this.http.delete(`/api/device/${id}`);
+}
+
 }

@@ -29,6 +29,7 @@ export class DevicesComponent implements OnInit, OnDestroy {
     "createdAt",
     "ipAddress",
     "location",
+    "mobileNumber",
     "deviceName",
     "platform",
     "deviceId",
@@ -81,6 +82,13 @@ export class DevicesComponent implements OnInit, OnDestroy {
       panelClass: 'open-url',
       disableClose: true
     });
+  }
+
+  onRemoveDevice(device) {
+    const isRemove = confirm("Are you sure to delete?");
+    if (isRemove) {
+      this.deviceService.removeDevice(device._id);
+    }
   }
 
   ngOnDestroy(): void {

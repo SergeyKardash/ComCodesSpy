@@ -65,6 +65,20 @@
         }
       }
       .open-url {
+        background-color: #b2ff59;
+        border-radius: 5px;
+        color: #fff;
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+        &/deep/.material-icons {
+          font-size: 16px;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+        }
+      }
+      .remove {
         background-color: #ff5722;
         border-radius: 5px;
         color: #fff;

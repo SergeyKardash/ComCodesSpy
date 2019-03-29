@@ -12,4 +12,7 @@ router.get('/:id', controller.getDeviceById);
 // POST /api/device
 router.post('/', controller.createDevice);
 
+// DELETE /api/device
+router.delete('/:id', controller.removeDevice);
+
 module.exports = router;
