@@ -23,7 +23,6 @@
     "cors": "^2.8.5",
     "express": "^4.16.4",
     "express-ip": "^1.0.3",
-    "geoip-country-lite": "^1.0.0",
     "jsonwebtoken": "^8.5.0",
     "moment": "^2.24.0",
     "mongodb": "^3.1.13",

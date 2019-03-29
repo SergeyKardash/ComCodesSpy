@@ -25,6 +25,10 @@ const deviceSchema = new Schema({
   country: {
     type: String,
     default: ''
+  },
+  city: {
+    type: String,
+    default: ''
   }
 }, {
   timestamps: true

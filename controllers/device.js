@@ -1,6 +1,5 @@
 const Device = require('../models/Device');
 const errorHandler = require('../utils/errorHandler');
-const geoip = require('geoip-country-lite');
 
 module.exports.getDevices = async (req, res, next) => {
   try {
@@ -24,20 +23,23 @@ module.exports.getDeviceById = async (req, res, next) => {
 module.exports.createDevice = async (req, res, next) => {
   try {
     const deviceId = req.body.deviceId;
-    let ipAdress = req.connection.remoteAddress;
-    console.log(req.ipInfo)
-    console.log(ipAdress)
-    ipAdress = ipAdress.replace(/^.*:/, '');
-    const countryObj = geoip.lookup(ipAdress);
-    console.log(ipAdress);
-    console.log(countryObj);
-    const countryCode = countryObj.country
+    const xForwardedFor = (req.headers['x-forwarded-for'] || '').replace(/:\d+$/, '');
+    const ip = xForwardedFor || req.connection.remoteAddress;
+    if (ip.includes('::ffff:')) {
+      ip = ip.split(':').reverse()[0]
+    }
+    const country = req.ipInfo.country;
+    const city = req.ipInfo.city;
     const connectedDevice = await Device.findOne({
       deviceId  
     });
+
+    console.log(ip)
+    console.log(country, city)
     if (connectedDevice) {
-      connectedDevice.ipAddress = ipAdress,
-      connectedDevice.country = countryCode,
+      connectedDevice.ipAddress = ip,
+      connectedDevice.country = country,
+      connectedDevice.city = city,
       connectedDevice.deviceName = req.body.deviceName,
       connectedDevice.platform = req.body.platform,
       connectedDevice.deviceId = req.body.deviceId,
@@ -46,8 +48,9 @@ module.exports.createDevice = async (req, res, next) => {
       res.status(201).json(connectedDevice);
     } else {
       const device = await new Device({
-        ipAddress: ipAdress,
+        ipAddress: ip,
         country: countryCode,
+        city: city,
         deviceName: req.body.deviceName,
         platform: req.body.platform,
         deviceId: req.body.deviceId,
