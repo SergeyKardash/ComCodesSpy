@@ -86,6 +86,7 @@ export class DevicesComponent implements OnInit, OnDestroy {
 
   onRemoveDevice(device) {
     const isRemove = confirm("Are you sure to delete?");
+    
     console.log(isRemove);
     if (isRemove) {
       this.deviceService.removeDevice(device._id);
