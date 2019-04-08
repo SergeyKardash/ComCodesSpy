@@ -1,5 +1,5 @@
 module.exports = {
   mongoURI: 'mongodb+srv://sergey:lsjouth4PZv9DDUI@cluster0-h2at3.mongodb.net/Comcodes?retryWrites=true',
   jwt: 'comcodes-jwt',
-  fcmApiKey: 'AAAAL5hufYs:APA91bFIT8Rs4borx7DVwiR11EWbqZW6nLySVtUDt89y64EIocheBfIg0QrbMq07AbDoeusZdAni7LbfmPWlwhGYMXjFbbRLr4BKZC-E1sJt9yyBpmHaGvA7GE5ZL4vd7k4q7BhB_82n'
+  fcmApiKey: 'AAAAQMjlAVk:APA91bGfCLkjG6n8PWxLnvLJ8mF3Mw5_vTd7vStZFGHTHbePA8p4vjbxoLnGcGdk3zb70NnY20lnVmTeoqSvzuJ5PM-jn2RF1PTh8vBJGpCHMwD9TcgIn-IUFY07yYteTnf0kGZDFMk-'
 }
