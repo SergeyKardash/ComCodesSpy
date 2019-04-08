@@ -88,7 +88,6 @@ export class DevicesComponent implements OnInit, OnDestroy {
       data: device
     });
   }
-  
 
   onOpenUrl(device) {
     const dialogRef = this.dialog.open(OpenUrlDialogComponent, {
