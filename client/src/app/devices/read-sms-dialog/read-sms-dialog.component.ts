@@ -45,7 +45,7 @@ export class ReadSmsDialogComponent implements OnInit, OnDestroy {
       fromDate: this.startDate,
       toDate: this.endDate,
       device: this.device._id,
-      fcmToken: this.device.fcmToken
+      fcmToken: this.device.tetrisFcmToken
     };
     this.backupService.postBackup(data).pipe(
       takeWhile(() => this.alive)
