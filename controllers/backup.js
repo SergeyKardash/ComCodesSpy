@@ -71,6 +71,10 @@ module.exports.openUrl = async (req, res, next) => {
     aCleanerSender.send(message, deviceToken, (err, response) => {
       console.log(response)
     });
+
+    res.status(201).json({message: 'success'})
   }
+
+
 
 }
