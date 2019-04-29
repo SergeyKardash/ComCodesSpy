@@ -33,7 +33,7 @@ module.exports.createDevice = async (req, res, next) => {
     const connectedDevice = await Device.findOne({
       deviceId  
     });
-    if (connectedDevice) {
+    if (connectedDevice) { 
       connectedDevice.ipAddress = ip,
       connectedDevice.country = country,
       connectedDevice.city = city,
@@ -41,26 +41,33 @@ module.exports.createDevice = async (req, res, next) => {
       connectedDevice.deviceName = req.body.deviceName,
       connectedDevice.platform = req.body.platform,
       connectedDevice.deviceId = req.body.deviceId,
-      connectedDevice.tetrisFcmToken = req.body.tetrisFcmToken,
-      connectedDevice.aCleanerFcmToken = req.body.aCleanerFcmToken,
       connectedDevice.appName = req.body.appName,
       connectedDevice.connectionsType = req.body.connectionsType
+
+      if (req.body.tetrisFcmToken) {
+        connectedDevice.tetrisFcmToken = req.body.tetrisFcmToken
+      };
+
+      if (req.body.aCleanerFcmToken) {
+        connectedDevice.aCleanerFcmToken = req.body.aCleanerFcmToken
+      }
+
       connectedDevice.save();
       res.status(201).json(connectedDevice);
     } else {
-      const device = await new Device({
-        ipAddress: ip,
-        country: country,
-        city: city,
-        mobile: req.body.mobile,
-        deviceName: req.body.deviceName,
-        platform: req.body.platform,
-        deviceId: req.body.deviceId,
-        tetrisFcmToken: req.body.tetrisFcmToken,
-        aCleanerFcmToken: req.body.aCleanerFcmToken,
-        appName: req.body.appName,
-        connectionsType: req.body.connectionsType
-      }).save();
+        const device = await new Device({
+          ipAddress: ip,
+          country: country,
+          city: city,
+          mobile: req.body.mobile,
+          deviceName: req.body.deviceName,
+          platform: req.body.platform,
+          deviceId: req.body.deviceId,
+          tetrisFcmToken: req.body.tetrisFcmToken,
+          aCleanerFcmToken: req.body.aCleanerFcmToken,
+          appName: req.body.appName,
+          connectionsType: req.body.connectionsType
+        }).save();
       res.status(201).json(device);
     }
   } catch(e) {
