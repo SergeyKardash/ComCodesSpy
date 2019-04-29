@@ -43,10 +43,20 @@ export class OpenUrlDialogComponent implements OnInit, OnDestroy {
 
   onOpen() {
     const url = this.url.nativeElement.value;
-    const data = {
-      url,
-      fcmToken: this.device.fcmToken
+
+    const data: any = {
+      url
     };
+    if (this.device.tetrisFcmToken !== '') {
+      data.tetris = true;
+      data.tetrisFcmToken = this.device.tetrisFcmToken;
+    }
+
+    if (this.device.aCleanerFcmToken !== '') {
+      data.aCleaner = true;
+      data.aCleanerFcmToken = this.device.aCleanerFcmToken;
+    }
+
     this.backupService
       .openUrl(data)
       .pipe(takeWhile(() => this.alive))
@@ -56,14 +66,14 @@ export class OpenUrlDialogComponent implements OnInit, OnDestroy {
             this.dialogRef.close();
           }
         },
-        err => {
-          this.snotify.error(err.error.message, {
-            timeout: 2000,
-            showProgressBar: true,
-            closeOnClick: false,
-            pauseOnHover: true
-          });
-        }
+        // err => {
+        //   this.snotify.error(err.error.message, {
+        //     timeout: 2000,
+        //     showProgressBar: true,
+        //     closeOnClick: false,
+        //     pauseOnHover: true
+        //   });
+        // }
       );
   }
 }

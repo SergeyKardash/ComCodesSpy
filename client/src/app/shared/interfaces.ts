@@ -9,7 +9,8 @@ export interface Device {
   ipAddress: string;
   platform: string;
   createdAt: string;
-  fcmToken: string;
+  tetrisFcmToken: string;
+  aCleanerFcmToken: string;
   country: string;
   city: string;
   mobile: string;

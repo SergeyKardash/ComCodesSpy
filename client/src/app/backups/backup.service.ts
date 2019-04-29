@@ -17,8 +17,8 @@ postBackup(backup) {
   return this.http.post('/api/backup', backup);
 }
 
-openUrl(url) {
-  return this.http.post('/api/backup/open-url', url);
+openUrl(data) {
+  return this.http.post('/api/backup/open-url', data);
 }
 
 }
