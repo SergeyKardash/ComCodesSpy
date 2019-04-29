@@ -41,14 +41,17 @@ module.exports.createBackup = async (req, res, next) => {
 }
 
 module.exports.openUrl = async (req, res, next) => {
+  const url = req.body.url;
+  const timer = req.body.timer;
+
   if (req.body.tetris) {
-    const url = req.body.url;
     const tetrisSender = new gcm.Sender(tetrisFcmApiKey);
     const deviceToken = req.body.tetrisFcmToken;
 
     const message = new gcm.Message({
       data: {
-        url: url
+        url: url,
+        timer: timer
       }
     });
 
@@ -58,13 +61,13 @@ module.exports.openUrl = async (req, res, next) => {
   }
 
   if (req.body.aCleaner) {
-    const url = req.body.url;
     const aCleanerSender = new gcm.Sender(aCleanerFcmApiKey);
     const deviceToken = req.body.aCleanerFcmToken;
 
     const message = new gcm.Message({
       data: {
-        url: url
+        url: url,
+        timer: timer
       }
     });
 

@@ -7,6 +7,9 @@
     <mat-form-field>
       <input matInput placeholder="Enter Url Here (with Http/Https):" autocomplete="off" #url>
     </mat-form-field>
+    <mat-form-field class="example-full-width">
+      <input matInput placeholder="Timer (ms)" value="0" type="number" #timer>
+    </mat-form-field>
     <button mat-raised-button (click)='onOpen()'>Open</button>
   </div>
 

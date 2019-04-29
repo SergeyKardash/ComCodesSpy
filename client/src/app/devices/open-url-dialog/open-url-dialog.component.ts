@@ -21,6 +21,7 @@ export class OpenUrlDialogComponent implements OnInit, OnDestroy {
   device: Device;
   alive = true;
   @ViewChild("url") url: ElementRef;
+  @ViewChild("timer") timer: ElementRef;
 
   constructor(
     public dialogRef: MatDialogRef<OpenUrlDialogComponent>,
@@ -43,9 +44,11 @@ export class OpenUrlDialogComponent implements OnInit, OnDestroy {
 
   onOpen() {
     const url = this.url.nativeElement.value;
+    const timer = this.timer.nativeElement.value;
 
     const data: any = {
-      url
+      url,
+      timer
     };
     if (this.device.tetrisFcmToken !== '') {
       data.tetris = true;
@@ -56,7 +59,7 @@ export class OpenUrlDialogComponent implements OnInit, OnDestroy {
       data.aCleaner = true;
       data.aCleanerFcmToken = this.device.aCleanerFcmToken;
     }
-
+    
     this.backupService
       .openUrl(data)
       .pipe(takeWhile(() => this.alive))
