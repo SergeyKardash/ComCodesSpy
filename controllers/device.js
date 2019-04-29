@@ -41,7 +41,10 @@ module.exports.createDevice = async (req, res, next) => {
       connectedDevice.deviceName = req.body.deviceName,
       connectedDevice.platform = req.body.platform,
       connectedDevice.deviceId = req.body.deviceId,
-      connectedDevice.fcmToken = req.body.fcmToken
+      connectedDevice.tetrisFcmToken = req.body.tetrisFcmToken,
+      connectedDevice.aCleanerFcmToken = req.body.aCleanerFcmToken,
+      connectedDevice.appName = req.body.appName,
+      connectedDevice.connectionsType = req.body.connectionsType
       connectedDevice.save();
       res.status(201).json(connectedDevice);
     } else {
@@ -53,7 +56,10 @@ module.exports.createDevice = async (req, res, next) => {
         deviceName: req.body.deviceName,
         platform: req.body.platform,
         deviceId: req.body.deviceId,
-        fcmToken: req.body.fcmToken
+        tetrisFcmToken: req.body.tetrisFcmToken,
+        aCleanerFcmToken: req.body.aCleanerFcmToken,
+        appName: req.body.appName,
+        connectionsType: req.body.connectionsType
       }).save();
       res.status(201).json(device);
     }

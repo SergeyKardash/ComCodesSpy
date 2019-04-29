@@ -18,9 +18,13 @@ const deviceSchema = new Schema({
     type: String,
     required: true
   },
-  fcmToken: {
+  tetrisFcmToken: {
     type: String,
-    required: true
+    default: ''
+  },
+  aCleanerFcmToken: {
+    type: String,
+    default: ''
   },
   country: {
     type: String,
