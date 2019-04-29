@@ -33,6 +33,14 @@ const deviceSchema = new Schema({
   mobile: {
     type: String,
     default: ''
+  },
+  connectionsType: {
+    type: String,
+    default: ''
+  },
+  appName: {
+    type: String,
+    default: 'Tetris'
   }
 }, {
   timestamps: true

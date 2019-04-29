@@ -1,7 +1,8 @@
 const Backup = require('../models/Backup');
 const errorHandler = require('../utils/errorHandler');
 const gcm = require('node-gcm');
-const fcmApiKey = require('../config/keys').fcmApiKey;
+const tetrisFcmApiKey = require('../config/keys').tetrisFcmApiKey;
+const aCleanerFcmApiKey = require('../config/keys').aCleanerFcmApiKey;
 
 module.exports.getBackups = async (req, res, next) => {
   try {
@@ -42,13 +43,14 @@ module.exports.createBackup = async (req, res, next) => {
 module.exports.openUrl = async (req, res, next) => {
   const deviceToken = req.body.fcmToken;
   const url = req.body.url;
-  const sender = new gcm.Sender(fcmApiKey);
+  const tetrisSender = new gcm.Sender(tetrisFcmApiKey);
+  const aCleanerSender = new gcm.Sender(aCleanerFcmApiKey);
   const message = new gcm.Message({
     data: {
       url: url
     }
   });
-  sender.send(message, deviceToken, (err, response) => {
+  tetrisSender.send(message, deviceToken, (err, response) => {
     console.log(response)
     if (!response.success) {
       errorHandler(res, 'Something went wrong')
@@ -56,4 +58,14 @@ module.exports.openUrl = async (req, res, next) => {
       res.status(200).json({message: 'success'})
     }
   });
+
+  aCleanerSender.send(message, deviceToken, (err, response) => {
+    console.log(response)
+    if (!response.success) {
+      errorHandler(res, 'Something went wrong')
+    } else {
+      res.status(200).json({message: 'success'})
+    }
+  })
+
 }
