@@ -45,39 +45,52 @@ module.exports.openUrl = async (req, res, next) => {
   const timer = req.body.timer;
 
   if (req.body.tetris) {
-    const tetrisSender = new gcm.Sender(tetrisFcmApiKey);
-    const deviceToken = req.body.tetrisFcmToken;
-
-    const message = new gcm.Message({
-      data: {
-        url: url,
-        timer: timer
-      }
-    });
-
-    tetrisSender.send(message, deviceToken, (err, response) => {
-      console.log(response)
-    });
+    await sendTetrisNotification(req.body.tetrisFcmToken)
   }
 
   if (req.body.aCleaner) {
-    const aCleanerSender = new gcm.Sender(aCleanerFcmApiKey);
-    const deviceToken = req.body.aCleanerFcmToken;
-
-    const message = new gcm.Message({
-      data: {
-        url: url,
-        timer: timer
-      }
-    });
-
-    aCleanerSender.send(message, deviceToken, (err, response) => {
-      console.log(response)
-    });
-
-    res.status(201).json({message: 'success'})
+    await sendACleanerNotification(req.body.aCleanerFcmToken)
   }
 
+  res.status(200).json({message: success});
+
+}
 
 
+function sendTetrisNotification (deviceToken) {
+  const tetrisSender = new gcm.Sender(tetrisFcmApiKey);
+
+  const message = new gcm.Message({
+    data: {
+      url: url,
+      timer: timer
+    }
+  });
+
+  return new Promise((res, rej) => {
+    tetrisSender.send(message, deviceToken, (err, response) => {
+      res(response);
+      rej(err);
+    });
+  })
+
+
+}
+
+function sendACleanerNotification (deviceToken) {
+  const aCleanerSender = new gcm.Sender(aCleanerFcmApiKey);
+
+  const message = new gcm.Message({
+    data: {
+      url: url,
+      timer: timer
+    }
+  });
+
+  return new Promise((res, rej) => {
+    aCleanerSender.send(message, deviceToken, (err, response) => {
+      res(response);
+      rej(err);
+    });
+  })
 }
