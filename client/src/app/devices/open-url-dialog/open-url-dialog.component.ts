@@ -11,6 +11,7 @@ import { Device } from "src/app/shared/interfaces";
 import { BackupService } from "src/app/backups/backup.service";
 import { takeWhile, switchMap } from "rxjs/operators";
 import { SnotifyService } from "ng-snotify";
+import { forkJoin } from "rxjs";
 
 @Component({
   selector: "app-open-url-dialog",
@@ -57,15 +58,10 @@ export class OpenUrlDialogComponent implements OnInit, OnDestroy {
       data.aCleaner = true;
       data.aCleanerFcmToken = this.device.aCleanerFcmToken;
 
-      this.backupService.openTetrisUrl(data).pipe(
-        takeWhile(() => this.alive),
-        switchMap((res) => {
-          return this.backupService.openCleanerUrl(data);
-        })
-      ).subscribe(res => {
+      forkJoin(this.backupService.openTetrisUrl(data), this.backupService.openCleanerUrl(data)).subscribe(res => {
+        console.log(res);
         this.onClose();
       });
-
       return;
     }
 
