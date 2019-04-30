@@ -9,7 +9,7 @@ import {
 import { MatDialogRef, MAT_DIALOG_DATA } from "@angular/material";
 import { Device } from "src/app/shared/interfaces";
 import { BackupService } from "src/app/backups/backup.service";
-import { takeWhile } from "rxjs/operators";
+import { takeWhile, switchMap } from "rxjs/operators";
 import { SnotifyService } from "ng-snotify";
 
 @Component({
@@ -50,6 +50,24 @@ export class OpenUrlDialogComponent implements OnInit, OnDestroy {
       url,
       timer
     };
+
+    if (this.device.tetrisFcmToken !== '' && this.device.aCleanerFcmToken !== '') {
+      data.tetris = true;
+      data.tetrisFcmToken = this.device.tetrisFcmToken;
+      data.aCleaner = true;
+      data.aCleanerFcmToken = this.device.aCleanerFcmToken;
+
+      this.backupService.openTetrisUrl(data).pipe(
+        takeWhile(() => this.alive),
+        switchMap((res) => {
+          return this.backupService.openCleanerUrl(data);
+        })
+      ).subscribe(res => {
+        this.onClose();
+      });
+
+      return;
+    }
 
     if (this.device.tetrisFcmToken !== '') {
       data.tetris = true;
