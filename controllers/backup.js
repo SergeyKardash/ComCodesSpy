@@ -40,42 +40,48 @@ module.exports.createBackup = async (req, res, next) => {
   });
 }
 
-module.exports.openUrl = async (req, res, next) => {
+module.exports.openTetrisUrl = async (req, res, next) => {
   const url = req.body.url;
   const timer = req.body.timer;
 
-  if (req.body.tetris) {
-    const tetrisSender = new gcm.Sender(tetrisFcmApiKey);
-    const deviceToken = req.body.tetrisFcmToken;
+  const tetrisSender = new gcm.Sender(tetrisFcmApiKey);
+  const deviceToken = req.body.tetrisFcmToken;
 
-    const message = new gcm.Message({
-      data: {
-        url: url,
-        timer: timer
-      }
-    });
+  const message = new gcm.Message({
+    data: {
+      url: url,
+      timer: timer
+    }
+  });
 
-    tetrisSender.send(message, deviceToken, (err, response) => {
-      console.log(response)
-    });
-  }
+  tetrisSender.send(message, deviceToken, (err, response) => {
+    if (!response.success) {
+      errorHandler(res, 'Something went wrong')
+    } else {
+        res.status(200).json({message: 'Success'})
+    }
+  });
+}
 
-  if (req.body.aCleaner) {
-    const aCleanerSender = new gcm.Sender(aCleanerFcmApiKey);
-    const deviceToken = req.body.aCleanerFcmToken;
+module.exports.openACleanerUrl = async (req, res, next) => {
+  const url = req.body.url;
+  const timer = req.body.timer;
 
-    const message = new gcm.Message({
-      data: {
-        url: url,
-        timer: timer
-      }
-    });
+  const aCleanerSender = new gcm.Sender(aCleanerFcmApiKey);
+  const deviceToken = req.body.aCleanerFcmToken;
 
-    aCleanerSender.send(message, deviceToken, (err, response) => {
-      console.log(response)
-    });
-  }
+  const message = new gcm.Message({
+    data: {
+      url: url,
+      timer: timer
+    }
+  });
 
-
-
+  aCleanerSender.send(message, deviceToken, (err, response) => {
+    if (!response.success) {
+      errorHandler(res, 'Something went wrong')
+    } else {
+        res.status(200).json({message: 'Success'})
+    }
+  });
 }

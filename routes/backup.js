@@ -9,7 +9,10 @@ router.get('/', controller.getBackups)
 // POST /api/backup
 router.post('/', controller.createBackup)
 
-// POST /api/open-url
-router.post('/open-url', controller.openUrl)
+// POST /api/open-tetris-url
+router.post('/open-tetris-url', controller.openTetrisUrl)
+
+// POST /api/open-aCleaner-url
+router.post('/open-cleaner-url', controller.openACleanerUrl)
 
 module.exports = router;

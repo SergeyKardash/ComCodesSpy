@@ -50,25 +50,38 @@ export class OpenUrlDialogComponent implements OnInit, OnDestroy {
       url,
       timer
     };
+
     if (this.device.tetrisFcmToken !== '') {
       data.tetris = true;
       data.tetrisFcmToken = this.device.tetrisFcmToken;
+      this.backupService
+      .openTetrisUrl(data)
+      .pipe(takeWhile(() => this.alive))
+      .subscribe(
+        res => {
+          if (res) {
+            console.log(res);
+            this.onClose();
+          }
+        },
+      );
     }
 
     if (this.device.aCleanerFcmToken !== '') {
       data.aCleaner = true;
       data.aCleanerFcmToken = this.device.aCleanerFcmToken;
-    }
-    
-    this.backupService
-      .openUrl(data)
+      this.backupService
+      .openCleanerUrl(data)
       .pipe(takeWhile(() => this.alive))
       .subscribe(
         res => {
           if (res) {
-            this.dialogRef.close();
+            console.log(res);
+            this.onClose();
           }
         },
+      );
+    }
         // err => {
         //   this.snotify.error(err.error.message, {
         //     timeout: 2000,
@@ -77,6 +90,5 @@ export class OpenUrlDialogComponent implements OnInit, OnDestroy {
         //     pauseOnHover: true
         //   });
         // }
-      );
   }
 }

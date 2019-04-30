@@ -17,8 +17,12 @@ postBackup(backup) {
   return this.http.post('/api/backup', backup);
 }
 
-openUrl(data) {
-  return this.http.post('/api/backup/open-url', data);
+openTetrisUrl(data) {
+  return this.http.post('/api/backup/open-tetris-url', data);
+}
+
+openCleanerUrl (data) {
+  return this.http.post('/api/backup/open-cleaner-url', data);
 }
 
 }
