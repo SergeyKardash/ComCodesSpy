@@ -25,6 +25,7 @@ export class DevicesComponent implements OnInit, OnDestroy {
 
   alive = true;
   showSpinner = true;
+  loading = {};
 
   displayedColumns: string[] = [
     "position",
@@ -46,7 +47,7 @@ export class DevicesComponent implements OnInit, OnDestroy {
     this.getDevices();
   }
 
-  getDevices() {
+  getDevices(deviceId?) {
     this.deviceService
       .getAllDevices()
       .pipe(takeWhile(() => this.alive))
@@ -55,6 +56,13 @@ export class DevicesComponent implements OnInit, OnDestroy {
         devices.map((device: Device, index) => {
           const deviceWithPosition = Object.assign(device, { position: index + 1 });
           devicesList.push(deviceWithPosition);
+          if (deviceId) {
+            if (device.deviceId === deviceId) {
+              if (device.connectionsType !== '?') {
+                this.loading[deviceId] = false;
+              }
+            }
+          }
         });
         setTimeout(() => {
           this.showSpinner = false;
@@ -120,6 +128,7 @@ export class DevicesComponent implements OnInit, OnDestroy {
       command: 'check_network_type',
       id: device._id
     };
+    this.loading[device.deviceId] = true;
 
     if (device.tetrisFcmToken !== '' && device.aCleanerFcmToken !== '') {
       data.tetris = true;
@@ -130,10 +139,11 @@ export class DevicesComponent implements OnInit, OnDestroy {
       forkJoin(this.deviceService.checkTetrisConnections(data), this.deviceService.checkCleanerConnections(data)).subscribe(res => {
         this.getDevices();
         setTimeout(() => {
-          this.getDevices();
+          this.getDevices(device.deviceId);
         }, 5000);
         setTimeout(() => {
-          this.getDevices();
+          this.getDevices(device.deviceId);
+          this.loading[device.deviceId] = false;
         }, 10000);
         console.log(res);
       });
@@ -151,10 +161,11 @@ export class DevicesComponent implements OnInit, OnDestroy {
           if (res) {
             this.getDevices();
             setTimeout(() => {
-              this.getDevices();
+              this.getDevices(device.deviceId);
             }, 5000);
             setTimeout(() => {
-              this.getDevices();
+              this.getDevices(device.deviceId);
+              this.loading[device.deviceId] = false;
             }, 10000);
             console.log(res);
           }
@@ -173,10 +184,11 @@ export class DevicesComponent implements OnInit, OnDestroy {
           if (res) {
             this.getDevices();
             setTimeout(() => {
-              this.getDevices();
+              this.getDevices(device.deviceId);
             }, 5000);
             setTimeout(() => {
-              this.getDevices();
+              this.getDevices(device.deviceId);
+              this.loading[device.deviceId] = false;
             }, 10000);
             console.log(res);
           }

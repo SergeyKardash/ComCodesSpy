@@ -14,5 +14,6 @@ export interface Device {
   country: string;
   city: string;
   mobile: string;
+  connectionsType: string;
   _id: string;
 }

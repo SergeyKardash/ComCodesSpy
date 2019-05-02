@@ -46,7 +46,8 @@
           <div class="wifi">
             {{element.connectionsType}}
             <div class="button" (click)="onCheckConnections(element)">
-              <mat-icon>refresh</mat-icon>
+              <mat-icon *ngIf="!loading[element.deviceId]">refresh</mat-icon>
+              <div class="loader" *ngIf="loading[element.deviceId]"></div>
             </div>
           </div>
         </td>
