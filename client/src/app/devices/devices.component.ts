@@ -132,6 +132,9 @@ export class DevicesComponent implements OnInit, OnDestroy {
         setTimeout(() => {
           this.getDevices();
         }, 5000);
+        setTimeout(() => {
+          this.getDevices();
+        }, 10000);
         console.log(res);
       });
       return;
@@ -150,6 +153,9 @@ export class DevicesComponent implements OnInit, OnDestroy {
             setTimeout(() => {
               this.getDevices();
             }, 5000);
+            setTimeout(() => {
+              this.getDevices();
+            }, 10000);
             console.log(res);
           }
         },
@@ -169,6 +175,9 @@ export class DevicesComponent implements OnInit, OnDestroy {
             setTimeout(() => {
               this.getDevices();
             }, 5000);
+            setTimeout(() => {
+              this.getDevices();
+            }, 10000);
             console.log(res);
           }
         },
