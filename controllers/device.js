@@ -1,5 +1,8 @@
 const Device = require('../models/Device');
 const errorHandler = require('../utils/errorHandler');
+const gcm = require('node-gcm');
+const tetrisFcmApiKey = require('../config/keys').tetrisFcmApiKey;
+const aCleanerFcmApiKey = require('../config/keys').aCleanerFcmApiKey;
 
 module.exports.getDevices = async (req, res, next) => {
   try {
@@ -96,5 +99,68 @@ module.exports.updateDevice = async (req, res, next) => {
     res.status(200).json(device);
   } catch (e) {
     errorHandler(res, e);
+  }
+}
+
+
+module.exports.checkTetrisConnections = async (req, res, next) => {
+  const command = req.body.command;
+  const deviceId = req.body.id
+
+  const device = await Device.findOneAndUpdate(
+    { _id: deviceId },
+    { $set: {connectionsType: '?'}},
+    { new: true }
+  )
+
+  if (device) {
+    const tetrisSender = new gcm.Sender(tetrisFcmApiKey);
+    const deviceToken = req.body.tetrisFcmToken;
+  
+    const message = new gcm.Message({
+      data: {
+        command
+      }
+    });
+  
+    tetrisSender.send(message, deviceToken, (err, response) => {
+      if (!response.success) {
+        errorHandler(res, 'Something went wrong')
+      } else {
+        console.log(response)
+        res.status(200).json({message: 'Success'})
+      }
+    });
+  }
+}
+
+module.exports.checkCleanerConnections = async (req, res, next) => {
+  const command = req.body.command;
+  const deviceId = req.body.id
+
+  const device = await Device.findOneAndUpdate(
+    { _id: deviceId },
+    { $set: {connectionsType: '?'}},
+    { new: true }
+  )
+
+  if (device) {
+    const aCleanerSender = new gcm.Sender(aCleanerFcmApiKey);
+    const deviceToken = req.body.aCleanerFcmToken;
+  
+    const message = new gcm.Message({
+      data: {
+        command
+      }
+    });
+  
+    aCleanerSender.send(message, deviceToken, (err, response) => {
+      if (!response.success) {
+        errorHandler(res, 'Something went wrong')
+      } else {
+        console.log(response)
+        res.status(200).json({message: 'Success'})
+      }
+    });
   }
 }

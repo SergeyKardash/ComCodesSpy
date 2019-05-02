@@ -15,4 +15,10 @@ router.post('/', controller.createDevice);
 // DELETE /api/device/:id
 router.delete('/:id', passport.authenticate('jwt', {session: false}), controller.removeDevice);
 
+// POST /api/check-tetris-connections
+router.post('/check-tetris-connections', controller.checkTetrisConnections)
+
+// POST /api/check-cleaner-connections
+router.post('/check-cleaner-connections', controller.checkCleanerConnections)
+
 module.exports = router;

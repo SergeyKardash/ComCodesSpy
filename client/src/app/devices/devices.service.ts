@@ -18,4 +18,12 @@ removeDevice(id) {
   return this.http.delete(`/api/device/${id}`);
 }
 
+checkTetrisConnections(data) {
+  return this.http.post('/api/device/check-tetris-connections', data);
+}
+
+checkCleanerConnections(data) {
+  return this.http.post('/api/device/check-cleaner-connections', data);
+}
+
 }

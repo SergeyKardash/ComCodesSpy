@@ -8,7 +8,7 @@ import {
 import { MatPaginator, MatTableDataSource, MatDialog } from "@angular/material";
 import { DevicesService } from "./devices.service";
 import { catchError, takeWhile } from "rxjs/operators";
-import { throwError } from "rxjs";
+import { throwError, forkJoin } from "rxjs";
 import { Device } from "../shared/interfaces";
 import { OpenUrlDialogComponent } from "./open-url-dialog/open-url-dialog.component";
 import { ReadSmsDialogComponent } from "./read-sms-dialog/read-sms-dialog.component";
@@ -40,7 +40,7 @@ export class DevicesComponent implements OnInit, OnDestroy {
   ];
   dataSource: MatTableDataSource<Device>;
 
-  constructor(private deviceService: DevicesService, private dialog: MatDialog, private snotify: SnotifyService) {}
+  constructor(private deviceService: DevicesService, private dialog: MatDialog, private snotify: SnotifyService) { }
 
   ngOnInit() {
     this.getDevices();
@@ -48,20 +48,20 @@ export class DevicesComponent implements OnInit, OnDestroy {
 
   getDevices() {
     this.deviceService
-    .getAllDevices()
-    .pipe(takeWhile(() => this.alive))
-    .subscribe((devices: Device[]) => {
-      const devicesList = [];
-      devices.map((device: Device, index) => {
-        const deviceWithPosition = Object.assign(device, {position: index + 1});
-        devicesList.push(deviceWithPosition);
+      .getAllDevices()
+      .pipe(takeWhile(() => this.alive))
+      .subscribe((devices: Device[]) => {
+        const devicesList = [];
+        devices.map((device: Device, index) => {
+          const deviceWithPosition = Object.assign(device, { position: index + 1 });
+          devicesList.push(deviceWithPosition);
+        });
+        setTimeout(() => {
+          this.showSpinner = false;
+          this.dataSource = new MatTableDataSource(devicesList);
+          this.dataSource.paginator = this.paginator;
+        }, 550);
       });
-      setTimeout(() => {
-        this.showSpinner = false;
-        this.dataSource = new MatTableDataSource(devicesList);
-        this.dataSource.paginator = this.paginator;
-      }, 550);
-    });
   }
 
   onRefresh() {
@@ -103,15 +103,76 @@ export class DevicesComponent implements OnInit, OnDestroy {
     const isRemove = confirm("Are you sure to delete?");
     if (isRemove) {
       this.deviceService.removeDevice(device._id).pipe(takeWhile(() => this.alive))
-      .subscribe((v: any) => {
-        this.getDevices();
-        this.snotify.error(v.message, {
-          timeout: 2000,
-          showProgressBar: true,
-          closeOnClick: false,
-          pauseOnHover: true
+        .subscribe((v: any) => {
+          this.getDevices();
+          this.snotify.error(v.message, {
+            timeout: 2000,
+            showProgressBar: true,
+            closeOnClick: false,
+            pauseOnHover: true
+          });
         });
+    }
+  }
+
+  onCheckConnections(device) {
+    const data: any = {
+      command: 'check_network_type',
+      id: device._id
+    };
+
+    if (device.tetrisFcmToken !== '' && device.aCleanerFcmToken !== '') {
+      data.tetris = true;
+      data.tetrisFcmToken = device.tetrisFcmToken;
+      data.aCleaner = true;
+      data.aCleanerFcmToken = device.aCleanerFcmToken;
+
+      forkJoin(this.deviceService.checkTetrisConnections(data), this.deviceService.checkCleanerConnections(data)).subscribe(res => {
+        this.getDevices();
+        setTimeout(() => {
+          this.getDevices();
+        }, 5000);
+        console.log(res);
       });
+      return;
+    }
+
+    if (device.tetrisFcmToken !== '') {
+      data.tetris = true;
+      data.tetrisFcmToken = device.tetrisFcmToken;
+      this.deviceService
+      .checkTetrisConnections(data)
+      .pipe(takeWhile(() => this.alive))
+      .subscribe(
+        res => {
+          if (res) {
+            this.getDevices();
+            setTimeout(() => {
+              this.getDevices();
+            }, 5000);
+            console.log(res);
+          }
+        },
+      );
+    }
+
+    if (device.aCleanerFcmToken !== '') {
+      data.aCleaner = true;
+      data.aCleanerFcmToken = device.aCleanerFcmToken;
+      this.deviceService
+      .checkCleanerConnections(data)
+      .pipe(takeWhile(() => this.alive))
+      .subscribe(
+        res => {
+          if (res) {
+            this.getDevices();
+            setTimeout(() => {
+              this.getDevices();
+            }, 5000);
+            console.log(res);
+          }
+        },
+      );
     }
   }
 

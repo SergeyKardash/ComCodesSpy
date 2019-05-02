@@ -42,7 +42,14 @@
       <!-- Connection Type -->
       <ng-container matColumnDef="connectionsType">
         <th mat-header-cell *matHeaderCellDef> Connection Type </th>
-        <td mat-cell *matCellDef="let element"> {{element.connectionsType}} </td>
+        <td mat-cell *matCellDef="let element">
+          <div class="wifi">
+            {{element.connectionsType}}
+            <div class="button" (click)="onCheckConnections(element)">
+              <mat-icon>refresh</mat-icon>
+            </div>
+          </div>
+        </td>
       </ng-container>
 
       <!-- Location -->

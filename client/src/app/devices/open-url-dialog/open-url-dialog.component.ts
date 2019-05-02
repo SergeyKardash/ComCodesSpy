@@ -96,13 +96,5 @@ export class OpenUrlDialogComponent implements OnInit, OnDestroy {
         },
       );
     }
-        // err => {
-        //   this.snotify.error(err.error.message, {
-        //     timeout: 2000,
-        //     showProgressBar: true,
-        //     closeOnClick: false,
-        //     pauseOnHover: true
-        //   });
-        // }
   }
 }
