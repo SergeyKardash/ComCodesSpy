@@ -18,11 +18,7 @@ const deviceSchema = new Schema({
     type: String,
     required: true
   },
-  tetrisFcmToken: {
-    type: String,
-    default: ''
-  },
-  aCleanerFcmToken: {
+  spyFcmToken: {
     type: String,
     default: ''
   },

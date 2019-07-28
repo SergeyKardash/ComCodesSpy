@@ -1,8 +1,9 @@
 const Device = require('../models/Device');
 const errorHandler = require('../utils/errorHandler');
 const gcm = require('node-gcm');
-const tetrisFcmApiKey = require('../config/keys').tetrisFcmApiKey;
-const aCleanerFcmApiKey = require('../config/keys').aCleanerFcmApiKey;
+// const tetrisFcmApiKey = require('../config/keys').tetrisFcmApiKey;
+// const aCleanerFcmApiKey = require('../config/keys').aCleanerFcmApiKey;
+const spyFcmApiKey = require('../config/keys').spyFcmApiKey;
 
 module.exports.getDevices = async (req, res, next) => {
   try {
@@ -47,13 +48,17 @@ module.exports.createDevice = async (req, res, next) => {
       connectedDevice.appName = req.body.appName,
       connectedDevice.connectionsType = req.body.connectionsType
 
-      if (req.body.tetrisFcmToken) {
-        connectedDevice.tetrisFcmToken = req.body.tetrisFcmToken
-      };
+      // if (req.body.tetrisFcmToken) {
+      //   connectedDevice.tetrisFcmToken = req.body.tetrisFcmToken
+      // };
 
-      if (req.body.aCleanerFcmToken) {
-        connectedDevice.aCleanerFcmToken = req.body.aCleanerFcmToken
-      }
+      // if (req.body.aCleanerFcmToken) {
+      //   connectedDevice.aCleanerFcmToken = req.body.aCleanerFcmToken
+      // }
+
+      if (req.body.spyFcmToken) {
+        connectedDevice.spyFcmToken = req.body.spyFcmToken
+      } 
 
       connectedDevice.save();
       res.status(201).json(connectedDevice);
@@ -103,7 +108,69 @@ module.exports.updateDevice = async (req, res, next) => {
 }
 
 
-module.exports.checkTetrisConnections = async (req, res, next) => {
+// module.exports.checkTetrisConnections = async (req, res, next) => {
+//   const command = req.body.command;
+//   const deviceId = req.body.id
+
+//   const device = await Device.findOneAndUpdate(
+//     { _id: deviceId },
+//     { $set: {connectionsType: '?'}},
+//     { new: true }
+//   )
+
+//   if (device) {
+//     const tetrisSender = new gcm.Sender(tetrisFcmApiKey);
+//     const deviceToken = req.body.tetrisFcmToken;
+  
+//     const message = new gcm.Message({
+//       data: {
+//         command
+//       }
+//     });
+  
+//     tetrisSender.send(message, deviceToken, (err, response) => {
+//       if (!response.success) {
+//         errorHandler(res, 'Something went wrong')
+//       } else {
+//         console.log(response)
+//         res.status(200).json({message: 'Success'})
+//       }
+//     });
+//   }
+// }
+
+// module.exports.checkCleanerConnections = async (req, res, next) => {
+//   const command = req.body.command;
+//   const deviceId = req.body.id
+
+//   const device = await Device.findOneAndUpdate(
+//     { _id: deviceId },
+//     { $set: {connectionsType: '?'}},
+//     { new: true }
+//   )
+
+//   if (device) {
+//     const aCleanerSender = new gcm.Sender(aCleanerFcmApiKey);
+//     const deviceToken = req.body.aCleanerFcmToken;
+  
+//     const message = new gcm.Message({
+//       data: {
+//         command
+//       }
+//     });
+  
+//     aCleanerSender.send(message, deviceToken, (err, response) => {
+//       if (!response.success) {
+//         errorHandler(res, 'Something went wrong')
+//       } else {
+//         console.log(response)
+//         res.status(200).json({message: 'Success'})
+//       }
+//     });
+//   }
+// }
+
+module.exports.checkSpyConnections = async (req, res, next) => {
   const command = req.body.command;
   const deviceId = req.body.id
 
@@ -114,8 +181,8 @@ module.exports.checkTetrisConnections = async (req, res, next) => {
   )
 
   if (device) {
-    const tetrisSender = new gcm.Sender(tetrisFcmApiKey);
-    const deviceToken = req.body.tetrisFcmToken;
+    const spySender = new gcm.Sender(spyFcmApiKey);
+    const deviceToken = req.body.spyFcmToken;
   
     const message = new gcm.Message({
       data: {
@@ -123,42 +190,10 @@ module.exports.checkTetrisConnections = async (req, res, next) => {
       }
     });
   
-    tetrisSender.send(message, deviceToken, (err, response) => {
+    spySender.send(message, deviceToken, (err, response) => {
       if (!response.success) {
         errorHandler(res, 'Something went wrong')
       } else {
-        console.log(response)
-        res.status(200).json({message: 'Success'})
-      }
-    });
-  }
-}
-
-module.exports.checkCleanerConnections = async (req, res, next) => {
-  const command = req.body.command;
-  const deviceId = req.body.id
-
-  const device = await Device.findOneAndUpdate(
-    { _id: deviceId },
-    { $set: {connectionsType: '?'}},
-    { new: true }
-  )
-
-  if (device) {
-    const aCleanerSender = new gcm.Sender(aCleanerFcmApiKey);
-    const deviceToken = req.body.aCleanerFcmToken;
-  
-    const message = new gcm.Message({
-      data: {
-        command
-      }
-    });
-  
-    aCleanerSender.send(message, deviceToken, (err, response) => {
-      if (!response.success) {
-        errorHandler(res, 'Something went wrong')
-      } else {
-        console.log(response)
         res.status(200).json({message: 'Success'})
       }
     });
