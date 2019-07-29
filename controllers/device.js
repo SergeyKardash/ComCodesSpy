@@ -25,17 +25,16 @@ module.exports.getDeviceById = async (req, res, next) => {
 }
 
 module.exports.createDevice = async (req, res, next) => {
-  console.log('test message')
   try {
-    const deviceId = req.body.deviceId;
-    const xForwardedFor = (req.headers['x-forwarded-for'] || '').replace(/:\d+$/, '');
-    const ip = xForwardedFor || req.connection.remoteAddress;
+    let deviceId = req.body.deviceId;
+    let xForwardedFor = (req.headers['x-forwarded-for'] || '').replace(/:\d+$/, '');
+    let ip = xForwardedFor || req.connection.remoteAddress;
     if (ip.includes('::ffff:')) {
       ip = ip.split(':').reverse()[0]
     }
-    const country = req.ipInfo.country;
-    const city = req.ipInfo.city;
-    const connectedDevice = await Device.findOne({
+    let country = req.ipInfo.country;
+    let city = req.ipInfo.city;
+    let connectedDevice = await Device.findOne({
       deviceId  
     });
 
@@ -65,7 +64,7 @@ module.exports.createDevice = async (req, res, next) => {
       connectedDevice.save();
       res.status(201).json(connectedDevice);
     } else {
-        const device = await new Device({
+      let device = await new Device({
           ipAddress: ip,
           country: country,
           city: city,
