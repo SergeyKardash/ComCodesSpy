@@ -38,6 +38,8 @@ module.exports.createDevice = async (req, res, next) => {
       deviceId  
     });
 
+    console.log('1');
+
 
     if (connectedDevice) { 
       connectedDevice.ipAddress = ip,
