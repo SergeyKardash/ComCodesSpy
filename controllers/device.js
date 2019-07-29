@@ -37,6 +37,8 @@ module.exports.createDevice = async (req, res, next) => {
     const connectedDevice = await Device.findOne({
       deviceId  
     });
+
+
     if (connectedDevice) { 
       connectedDevice.ipAddress = ip,
       connectedDevice.country = country,
@@ -63,6 +65,7 @@ module.exports.createDevice = async (req, res, next) => {
       connectedDevice.save();
       res.status(201).json(connectedDevice);
     } else {
+      console.log(ip, country, city)
         const device = await new Device({
           ipAddress: ip,
           country: country,
