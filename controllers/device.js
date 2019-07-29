@@ -71,9 +71,8 @@ module.exports.createDevice = async (req, res, next) => {
           deviceName: req.body.deviceName,
           platform: req.body.platform,
           deviceId: req.body.deviceId,
-          tetrisFcmToken: req.body.tetrisFcmToken,
-          aCleanerFcmToken: req.body.aCleanerFcmToken,
           appName: req.body.appName,
+          spyFcmToken: req.body.spyFcmToken,
           connectionsType: req.body.connectionsType
         }).save();
       res.status(201).json(device);
